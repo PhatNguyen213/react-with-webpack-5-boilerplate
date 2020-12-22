@@ -1,27 +1,19 @@
-const path = require('path');
-const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+ 
+const commonConfig = require('./webpack.common.js');
 
-module.exports = {
-  entry: path.resolve(__dirname, '../src/index.js'),
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
-      },
-    ],
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx'],
-  },
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: 'bundle.js',
-  },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
-  devServer: {
-    contentBase: path.resolve(__dirname, '../dist'),
-    hot: true,
-  },
+const getAddons = (addonsArgs) => {
+  const addons = Array.isArray(addonsArgs)
+    ? addonsArgs
+    : [addonsArgs];
+ 
+  return addons
+    .filter(Boolean)
+    .map((name) => require(`./addons/webpack.${name}.js`));
+};
+ 
+module.exports = ({ env, addon }) => {
+  const envConfig = require(`./webpack.${env}.js`);
+ 
+  return merge(commonConfig, envConfig, ...getAddons(addon));
 };
