@@ -1,10 +1,8 @@
 const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: path.resolve(__dirname, '../src/index.js'),
+  entry: path.resolve(__dirname, '../src/index.jsx'),
   module: {
     rules: [
       {
@@ -28,22 +26,19 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js', '.jsx'],
+    alias: {
+      '@': path.resolve(__dirname, '../src'),
+      '@assets': path.resolve(__dirname, '../src/assets'),
+      '@components': path.resolve(__dirname, '../src/components'),
+      stream: 'stream-browserify',
+      path: 'path-browserify',
+    },
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'bundle.js',
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      title: 'HOMS Project',
-      template: path.resolve(__dirname, '../src/index.html'),
-    }),
+    new CleanWebpackPlugin()
   ],
-  devServer: {
-    contentBase: path.resolve(__dirname, '../dist'),
-    hot: true,
-    historyApiFallback: true,
-  },
 };
