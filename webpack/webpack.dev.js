@@ -11,12 +11,12 @@ module.exports = {
       path: path.resolve(__dirname, '..', './.env.development'),
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html'),
+      template: path.resolve(__dirname, '..', './public/index.html'),
       // favicon: '../public/favicon.ico',
     }),
   ],
   devServer: {
-    contentBase: path.resolve(__dirname, '../dist'),
+    contentBase: path.resolve(__dirname, '..', './dist'),
     hot: true,
     historyApiFallback: true,
     port: 3000,
